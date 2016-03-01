@@ -53,6 +53,7 @@ public class netClientMgr : MonoBehaviour {
 
 	public static Button camLockBtn;
 	public static Button blessingModeBtn;
+	public static Button blessMyGoalBtn;
 	public static Button pusherLinkBtn;
 
 	public Image minimapImage;
@@ -61,8 +62,11 @@ public class netClientMgr : MonoBehaviour {
 
 	static NetworkClient myClient;
 	static CScommon.GameSizeMsg gameSizeMsg = new CScommon.GameSizeMsg(); //*** I'm not sure whether I need to initilize that or not
-	static Text gameNameDisplaytext;
-	static Transform teamScoreDisplayTransform;
+//	static Text gameNameDisplaytext;
+	static Transform teamScoreDisplay1Transform;
+	static Transform teamScoreDisplay2Transform;
+	static Transform goalOomphDisplay1Transform;
+	static Transform goalOomphDisplay2Transform;
 
 
 	static float camSpeed = 270.0f;
@@ -94,13 +98,19 @@ public class netClientMgr : MonoBehaviour {
 		speedSlider = GameObject.Find("SpeedSlider").GetComponent<Slider>();
 		camLockBtn = GameObject.Find("camLockBtn").GetComponent<Button>();
 		blessingModeBtn = GameObject.Find("blessingModeBtn").GetComponent<Button>();
+		blessMyGoalBtn = GameObject.Find("BlessMyTeam").GetComponent<Button>();
 		pusherLinkBtn = GameObject.Find("pusherLinkBtn").GetComponent<Button>();
-		teamScoreDisplayTransform = GameObject.Find("TeamsScoreDisplay").transform;
+		teamScoreDisplay1Transform = GameObject.Find("TeamsScoreDisplay1").transform;
+		teamScoreDisplay2Transform = GameObject.Find("TeamsScoreDisplay2").transform;
+		goalOomphDisplay1Transform = GameObject.Find("GoalOomphDisplay1").transform;
+		goalOomphDisplay2Transform = GameObject.Find("GoalOomphDisplay2").transform;
 
 		myChatInputField.gameObject.SetActive(false);
 		speedSlider.gameObject.SetActive(false);
 		camLockBtn.gameObject.SetActive(false);
 		blessingModeBtn.gameObject.SetActive(false);
+		blessMyGoalBtn.gameObject.SetActive(false);
+
 		pusherLinkBtn.gameObject.SetActive(false);
 
 		audioSourceBeepSelectNodeForLink = AddAudio(clipBeepSelectNodeForLink,false,false,0.5f);
@@ -224,7 +234,7 @@ public class netClientMgr : MonoBehaviour {
 		serverIPLocalConnectButton.gameObject.SetActive(true);
 		initialized = false;
 		miniCamera.gameObject.SetActive(false);
-		gameNameDisplaytext.gameObject.SetActive(false);
+//		gameNameDisplaytext.gameObject.SetActive(false);
 
 		gameSizeMsg.numNodes = 0;
 		gameSizeMsg.numLinks = 0;
@@ -234,6 +244,8 @@ public class netClientMgr : MonoBehaviour {
 		speedSlider.gameObject.SetActive(false);
 		camLockBtn.gameObject.SetActive(false);
 		blessingModeBtn.gameObject.SetActive(false);
+		blessMyGoalBtn.gameObject.SetActive(false);
+
 		pusherLinkBtn.gameObject.SetActive(false);
 
 		minimapImage.gameObject.SetActive(false);
@@ -434,7 +446,7 @@ public class netClientMgr : MonoBehaviour {
 		GOspinner.cleanScene ();
 		GOspinner.settingUpTheScene();
 		miniCamera.gameObject.SetActive(true);
-		gameNameDisplaytext.gameObject.SetActive(true);
+//		gameNameDisplaytext.gameObject.SetActive(true);
 
 		mainCamAudioSource.clip = clipGameSize;
 		mainCamAudioSource.Play();
@@ -456,6 +468,8 @@ public class netClientMgr : MonoBehaviour {
 		speedSlider.gameObject.SetActive(true);
 		camLockBtn.gameObject.SetActive(true);
 		blessingModeBtn.gameObject.SetActive(true);
+		blessMyGoalBtn.gameObject.SetActive(true);
+
 		pusherLinkBtn.gameObject.SetActive(true);
 
 		speedSlider.value = GOspinner.myInternalMusSpeed;
@@ -466,6 +480,8 @@ public class netClientMgr : MonoBehaviour {
 			speedSlider.gameObject.SetActive(false);
 			camLockBtn.gameObject.SetActive(false);
 			blessingModeBtn.gameObject.SetActive(false);
+			blessMyGoalBtn.gameObject.SetActive(false);
+
 			pusherLinkBtn.gameObject.SetActive(false);
 
 			GOspinner.cameraFollowMynode = false;
@@ -704,11 +720,23 @@ public class netClientMgr : MonoBehaviour {
 			teamsScoreDisplayTransforms = new Transform[gameSizeMsg.teams.Length];
 			for(int i = 0; i < gameSizeMsg.teams.Length; i++)
 			{
-				teamsScoreDisplayTransforms[i] = (Transform)Instantiate(teamScoreDisplayTransform);
+				if(gameSizeMsg.teams[i].teamNumber == 1)
+				{
+					teamScoreDisplay1Transform.GetComponent<Text>().text += "      " +gameSizeMsg.teams[i].teamName + "0";
+
+				}
+
+				if(gameSizeMsg.teams[i].teamNumber == 2)
+				{
+					teamScoreDisplay2Transform.GetComponent<Text>().text += "      " +gameSizeMsg.teams[i].teamName + "0";
+
+				}
+//				teamsScoreDisplayTransforms[i] = (Transform)Instantiate(teamScoreDisplayTransform);
+//				teamsScoreDisplayTransforms[i].tag = "teamScoreDisplay";
 				//scale and color and position of it should be tested
-				teamsScoreDisplayTransforms[i].transform.position = new Vector2 ( teamsScoreDisplayTransforms[i].transform.position.x, 20.0f * i + 5.0f);
-				teamsScoreDisplayTransforms[i].GetComponent<Text>().text = gameSizeMsg.teams[i].teamName + "0";
-				teamsScoreDisplayTransforms[i].GetComponent<Text>().color = gameSizeMsg.teams[i].teamNumber == 1? Color.red: Color.blue;
+
+//				teamsScoreDisplayTransforms[i].transform.position = new Vector2 ( teamsScoreDisplayTransforms[i].transform.position.x, 20.0f * i + 5.0f);
+//				teamsScoreDisplayTransforms[i].GetComponent<Text>().color = gameSizeMsg.teams[i].teamNumber == 1? Color.red: Color.blue;
 			}
 		}
 		
@@ -1085,8 +1113,9 @@ public class netClientMgr : MonoBehaviour {
 			}
 			foreach(int playerID in playersNameTransforms.Keys)
 			{
-				playersNameTransforms[playerID].position = new Vector2(bubbles [playerID].position.x,bubbles [playerID].position.y + initMsg.nodeData[playerID].radius* 1.20f) ;
+				playersNameTransforms[playerID].position = new Vector2(bubbles [playerID].position.x,bubbles [playerID].position.y + initMsg.nodeData[playerID].radius * 1.6f) ;
 			}
+			displayOomphOfGoals();
 		}
 
 		private static float angle = 0.0f;
@@ -1098,6 +1127,45 @@ public class netClientMgr : MonoBehaviour {
 		}
 
 		#endregion
+
+		internal static void displayOomphOfGoals()
+		{
+			if(gameSizeMsg.teams.Length > 0){
+				for (int i = 0; i < gameSizeMsg.teams.Length; i++)
+				{
+					//gaoloomphGO.scale = 
+
+					float oomphRadius = initMsg.nodeData[gameSizeMsg.teams[i].nodeId].radius *
+						Mathf.Pow(updateMsg.nodeData[gameSizeMsg.teams[i].nodeId].oomph
+							/(CScommon.maxOomph (initMsg.nodeData[i].radius,0L)),0.5f);
+					if (i == 0)
+					{
+						float maxOomph = Mathf.Round(CScommon.maxOomph (initMsg.nodeData[gameSizeMsg.teams[i].nodeId].radius,0L));
+						float currentOomph = Mathf.Round(updateMsg.nodeData[gameSizeMsg.teams[i].nodeId].oomph);
+						goalOomphDisplay1Transform.GetComponent<Text>().text = currentOomph + "\n" + maxOomph;
+
+//						goalOomphDisplay1Transform.GetComponent<Text>().text = updateMsg.nodeData[gameSizeMsg.teams[i].nodeId].oomph
+//							+ "  " + (CScommon.maxOomph (initMsg.nodeData[gameSizeMsg.teams[i].nodeId].radius,0L));
+//						oomphs[i].localScale =  new Vector3(oomphRadius * 5.0f ,oomphRadius * 5.0f ,0.0f);
+
+					}
+					if (i == 1)
+					{
+						float maxOomph = Mathf.Round(CScommon.maxOomph (initMsg.nodeData[gameSizeMsg.teams[i].nodeId].radius,0L));
+						float currentOomph = Mathf.Round(updateMsg.nodeData[gameSizeMsg.teams[i].nodeId].oomph);
+
+						goalOomphDisplay2Transform.GetComponent<Text>().text = currentOomph + "\n" + maxOomph;
+//							+ "  " + (CScommon.maxOomph (initMsg.nodeData[gameSizeMsg.teams[i].nodeId].radius,0L));
+//						oomphs[i].localScale =  new Vector3(oomphRadius * 5.0f ,oomphRadius * 5.0f ,0.0f);
+
+					}
+
+//					updateMsg.nodeData[gameSizeMsg.teams[i].nodeId].oomph;
+				}
+			}
+		}
+
+
 
 		#region displayNames
 		internal static void playerNamesManage (CScommon.NodeNamesMsg partofnames)
@@ -1134,24 +1202,24 @@ public class netClientMgr : MonoBehaviour {
 
 		public static void teamScoreManager(CScommon.TeamScoreMsg teamScoreMsg)
 		{
-			if (teamScoreMsg.teamNumber == 0)
+			Debug.Log("teamScore: " + teamScoreMsg.score + "teamnumber: " +teamScoreMsg.teamNumber);
+			if (teamScoreMsg.teamNumber == 1)
 			{
 				if(teamOneScoreForPast == 0 )
 				{
 					teamOneScoreForPast = teamScoreMsg.score;
 				}
-			teamsScoreDisplayTransforms[teamScoreMsg.teamNumber].GetComponent<Text>().text = 
-					gameSizeMsg.teams[teamScoreMsg.teamNumber].teamName + ": " + (teamScoreMsg.score - teamOneScoreForPast);
+				teamScoreDisplay1Transform.GetComponent<Text>().text = 
+					gameSizeMsg.teams[0].teamName + ": " + (teamScoreMsg.score - teamOneScoreForPast);
 			}
-
-			if (teamScoreMsg.teamNumber == 1)
+			if (teamScoreMsg.teamNumber == 2)
 			{
 				if(teamTwoScoreForPast == 0 )
 				{
 					teamTwoScoreForPast = teamScoreMsg.score;
 				}
-				teamsScoreDisplayTransforms[teamScoreMsg.teamNumber].GetComponent<Text>().text = 
-					gameSizeMsg.teams[teamScoreMsg.teamNumber].teamName + ": " + (teamScoreMsg.score - teamTwoScoreForPast);
+				teamScoreDisplay2Transform.GetComponent<Text>().text = 
+					gameSizeMsg.teams[1].teamName + ": " + (teamScoreMsg.score - teamTwoScoreForPast);
 			}
 		}
 
@@ -1196,11 +1264,11 @@ public class netClientMgr : MonoBehaviour {
 		public static void displayNameChanger(int nodeId)
 		{
 			playersNameTransforms[nodeId].FindChild("playerNameMainCam").GetComponent<TextMesh>().text =
-				" " + GOspinner.dicPlayerNamesIntString[nodeId] +
-				"\n P: " + scoreMsgGOspinner[nodeId].productivity.ToString()+" L: " + scoreMsgGOspinner[nodeId].level.ToString();
+				GOspinner.dicPlayerNamesIntString[nodeId] +
+				"\n P: " + Mathf.Round(scoreMsgGOspinner[nodeId].productivity).ToString()+" L: " + Mathf.Round(scoreMsgGOspinner[nodeId].level).ToString();
 			//					+ " P" + currentPerformance(nodeId).ToString();
 			playersNameTransforms[nodeId].FindChild("playerNameMiniMap").GetComponent<TextMesh>().text =
-				" " + GOspinner.dicPlayerNamesIntString[nodeId]+": P: " + scoreMsgGOspinner[nodeId].productivity.ToString()+"L: " + scoreMsgGOspinner[nodeId].level.ToString();
+				GOspinner.dicPlayerNamesIntString[nodeId]; //+": P: " + scoreMsgGOspinner[nodeId].productivity.ToString()+"L: " + scoreMsgGOspinner[nodeId].level.ToString();
 			//					+ " P" + currentPerformance(nodeId).ToString();
 		}
 			
@@ -1634,6 +1702,19 @@ public class netClientMgr : MonoBehaviour {
 
 			//	audioSourceBeepSelectNodeForLink.Play ();
 			}
+		}
+
+		public static void blessMyGoal()
+
+		{
+			if(myNodeIndex < 0) return;
+
+			CScommon.intMsg nim = new CScommon.intMsg ();
+			//finding the goal of my team
+			nim.value = gameSizeMsg.teams[teamNumCheck(initMsg.nodeData[myNodeIndex].dna) - 1].nodeId;
+
+			myClient.Send (CScommon.blessMsgType, nim);
+			Debug.Log("bless My Goal#" +nim.value);
 		}
 		#endregion
 

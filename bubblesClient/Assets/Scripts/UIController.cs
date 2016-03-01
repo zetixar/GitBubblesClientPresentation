@@ -38,6 +38,11 @@ public class UIController : MonoBehaviour {
 		
 	}
 
+	public void blessMyGoal()
+	{
+		netClientMgr.GOspinner.blessMyGoal();
+	}
+
 	public void PushLinkMode(int ZeroOffOneOn)
 	{
 		netClientMgr.GOspinner.pushLinkMode = (ZeroOffOneOn == 0) ? false : true;
