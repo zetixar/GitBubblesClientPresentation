@@ -104,9 +104,9 @@ using System.Collections;
 		public int numNodes;
 		public int numLinks;
 		public float worldRadius; 
-
 		public string gameName;
 		public int gameNumber;
+		public bool gameStart;
 		public TeamStruct[] teams;
 	}
 

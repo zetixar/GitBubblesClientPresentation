@@ -3,6 +3,7 @@
 
 // derived from http://docs.unity3d.com/Manual/UNetClientServer.html
 // and http://forum.unity3d.com/threads/master-server-sample-project.331979/
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,6 +18,7 @@ public class netClientMgr : MonoBehaviour {
 	#region fields
 	public static float nodeSclaeFactor = 1.8f;
 	public static int myNodeIndex;
+	public static int myTeamIndex;
 	public static bool stateChoosingServer = true;
 	public static bool stateIsConnected = false;
 	public static bool initialized = false;
@@ -380,6 +382,7 @@ public class netClientMgr : MonoBehaviour {
 	public void SetupClient()
 	{	
 		myNodeIndex = -1;
+		myTeamIndex = -1;
 		myClient = new NetworkClient();
 		Debug.Log ("Registering client callbacks");
 		myClient.RegisterHandler(MsgType.Connect, OnConnectedC);
@@ -465,6 +468,7 @@ public class netClientMgr : MonoBehaviour {
 	public void onNodeIDMsg(NetworkMessage netMsg){
 		CScommon.intMsg nodeIndexMsg = netMsg.ReadMessage<CScommon.intMsg>();
 		myNodeIndex = nodeIndexMsg.value;
+		myTeamIndex = (int)GOspinner.teamNumCheck(GOspinner.initMsg.nodeData[myNodeIndex].dna);
 		speedSlider.gameObject.SetActive(true);
 		camLockBtn.gameObject.SetActive(true);
 		blessingModeBtn.gameObject.SetActive(true);
@@ -752,8 +756,11 @@ public class netClientMgr : MonoBehaviour {
 			followingCamera = false;
 			displayNames = 2;
 			changeHowToDisPlayPlayersName();
-			teamOneScoreForPast = 0;
-			teamTwoScoreForPast = 0;
+			if(gameSizeMsg.gameStart)
+			{
+				teamOneScoreForPast = 0;
+				teamTwoScoreForPast = 0;
+			}
 		}
 		#endregion
 
@@ -849,7 +856,7 @@ public class netClientMgr : MonoBehaviour {
 				return;
 			}
 		}
-		private static long teamNumCheck(long dna)
+		public static long teamNumCheck(long dna)
 		{
 			return CScommon.dnaNumber(dna, CScommon.leftTeamBit,CScommon.rightTeamBit);
 		}
@@ -1077,14 +1084,15 @@ public class netClientMgr : MonoBehaviour {
 								Color.white;
 							continue;
 						}
-//						else if (CScommon.testBit (initMsg.nodeData[i].dna, CScommon.playerPlayingBit))
-//						{
-//							playersNameTransforms[i].FindChild("playerNameMiniMap").GetComponent<TextMesh>().color =
-//								Color.grey;
-//							playersNameTransforms[i].FindChild("playerNameMainCam").GetComponent<TextMesh>().color =
-//								Color.grey;
-//							continue;
-//						}
+						else if (gameSizeMsg.gameNumber > 5 &&//CScommon.testBit (initMsg.nodeData[i].dna, CScommon.playerPlayingBit) &&
+							(int)GOspinner.teamNumCheck(GOspinner.initMsg.nodeData[i].dna) == myTeamIndex)
+						{
+							playersNameTransforms[i].FindChild("playerNameMiniMap").GetComponent<TextMesh>().color =
+								Color.grey;
+							playersNameTransforms[i].FindChild("playerNameMainCam").GetComponent<TextMesh>().color =
+								Color.grey;
+							continue;
+						}
 						else if (updateMsg.nodeData[i].oomph > updateMsg.nodeData[myNodeIndex].oomph)
 						{
 							playersNameTransforms[i].FindChild("playerNameMiniMap").GetComponent<TextMesh>().color =
@@ -1263,6 +1271,7 @@ public class netClientMgr : MonoBehaviour {
 		}
 		public static void displayNameChanger(int nodeId)
 		{
+			try{
 			playersNameTransforms[nodeId].FindChild("playerNameMainCam").GetComponent<TextMesh>().text =
 				GOspinner.dicPlayerNamesIntString[nodeId] +
 				"\n P: " + Mathf.Round(scoreMsgGOspinner[nodeId].productivity).ToString()+" L: " + Mathf.Round(scoreMsgGOspinner[nodeId].level).ToString();
@@ -1270,6 +1279,12 @@ public class netClientMgr : MonoBehaviour {
 			playersNameTransforms[nodeId].FindChild("playerNameMiniMap").GetComponent<TextMesh>().text =
 				GOspinner.dicPlayerNamesIntString[nodeId]; //+": P: " + scoreMsgGOspinner[nodeId].productivity.ToString()+"L: " + scoreMsgGOspinner[nodeId].level.ToString();
 			//					+ " P" + currentPerformance(nodeId).ToString();
+			}
+			catch(Exception e){
+				Debug.Log("ERROR!");
+				Debug.Log("ERROR!");
+
+			}
 		}
 			
 
