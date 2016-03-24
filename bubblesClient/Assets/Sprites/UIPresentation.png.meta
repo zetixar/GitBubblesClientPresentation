@@ -1,0 +1,292 @@
+fileFormatVersion: 2
+guid: 25ec8c2b8935c3747893f45fd528dbcd
+timeCreated: 1457224225
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: UIPresentation_0
+    21300002: UIPresentation_1
+    21300004: UIPresentation_2
+    21300006: UIPresentation_3
+    21300008: UIPresentation_4
+    21300010: UIPresentation_5
+    21300012: UIPresentation_6
+    21300014: UIPresentation_7
+    21300016: UIPresentation_8
+    21300018: UIPresentation_9
+    21300020: UIPresentation_10
+    21300022: UIPresentation_11
+    21300024: UIPresentation_12
+    21300026: UIPresentation_13
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: UIPresentation_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 126
+        width: 447
+        height: 640
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 160.5, y: -257}
+        - {x: 172.5, y: -235}
+        - {x: 124.5, y: -191}
+        - {x: 66.5, y: -189}
+        - {x: 55.5, y: -131}
+        - {x: 38.5, y: -101}
+        - {x: -2.5, y: -59}
+        - {x: -127.5, y: 36}
+        - {x: -129.5, y: 75}
+        - {x: -144.5, y: 212}
+        - {x: -111.5, y: 253}
+        - {x: -94.5, y: 311}
+        - {x: -99.5, y: 320}
+        - {x: -223.5, y: 320}
+        - {x: -223.5, y: -139}
+        - {x: -221.5, y: -140}
+        - {x: -93.5, y: -58}
+        - {x: 11.5, y: -113}
+        - {x: -28.5, y: -319}
+        - {x: -28.5, y: -320}
+        - {x: 223.5, y: -320}
+        - {x: 223.5, y: -317}
+        - {x: 213.5, y: -313}
+    - name: UIPresentation_1
+      rect:
+        serializedVersion: 2
+        x: 498
+        y: 652
+        width: 115
+        height: 114
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -57.5, y: 57}
+        - {x: -57.5, y: -57}
+        - {x: -20.5, y: -57}
+        - {x: 55.5, y: -24}
+        - {x: 57.5, y: -6}
+        - {x: 57.5, y: 57}
+    - name: UIPresentation_2
+      rect:
+        serializedVersion: 2
+        x: 703
+        y: 588
+        width: 51
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 1.5, y: 50}
+        - {x: -25.5, y: 37}
+        - {x: -25.5, y: -34}
+        - {x: -6.5, y: -50}
+        - {x: 25.5, y: -50}
+        - {x: 25.5, y: 50}
+    - name: UIPresentation_3
+      rect:
+        serializedVersion: 2
+        x: 1079
+        y: 446
+        width: 18
+        height: 342
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: UIPresentation_4
+      rect:
+        serializedVersion: 2
+        x: 498
+        y: 421
+        width: 84
+        height: 167
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -42, y: 83.5}
+        - {x: -42, y: -83.5}
+        - {x: -4, y: -83.5}
+        - {x: 42, y: -52.5}
+        - {x: 42, y: 50.5}
+        - {x: 22, y: 83.5}
+    - name: UIPresentation_5
+      rect:
+        serializedVersion: 2
+        x: 844
+        y: 150
+        width: 276
+        height: 272
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 58, y: 136}
+        - {x: -60, y: 136}
+        - {x: -92, y: 125}
+        - {x: -110, y: 106}
+        - {x: -138, y: 69}
+        - {x: -138, y: -136}
+        - {x: 95, y: -136}
+        - {x: 138, y: -80}
+        - {x: 138, y: 75}
+        - {x: 137, y: 79}
+      - - {x: 42, y: 115}
+        - {x: 121, y: 17}
+        - {x: 65, y: -124}
+        - {x: -126, y: -124}
+    - name: UIPresentation_6
+      rect:
+        serializedVersion: 2
+        x: 514
+        y: 152
+        width: 84
+        height: 84
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -29, y: 42}
+        - {x: -42, y: 38}
+        - {x: -42, y: -42}
+        - {x: 42, y: -42}
+        - {x: 42, y: 34}
+        - {x: 33, y: 42}
+    - name: UIPresentation_7
+      rect:
+        serializedVersion: 2
+        x: 654
+        y: 152
+        width: 146
+        height: 146
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 22, y: 73}
+        - {x: -57, y: 36}
+        - {x: -73, y: -23}
+        - {x: -73, y: -73}
+        - {x: 73, y: -73}
+        - {x: 73, y: 73}
+    - name: UIPresentation_8
+      rect:
+        serializedVersion: 2
+        x: 13
+        y: 64
+        width: 260
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: UIPresentation_9
+      rect:
+        serializedVersion: 2
+        x: 316
+        y: 64
+        width: 260
+        height: 24
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: UIPresentation_10
+      rect:
+        serializedVersion: 2
+        x: 41
+        y: 32
+        width: 134
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: UIPresentation_11
+      rect:
+        serializedVersion: 2
+        x: 344
+        y: 32
+        width: 135
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: UIPresentation_12
+      rect:
+        serializedVersion: 2
+        x: 13
+        y: 1
+        width: 260
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: UIPresentation_13
+      rect:
+        serializedVersion: 2
+        x: 316
+        y: 1
+        width: 260
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

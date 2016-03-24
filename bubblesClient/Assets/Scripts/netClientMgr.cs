@@ -53,14 +53,23 @@ public class netClientMgr : MonoBehaviour {
 	public static Slider speedSlider;
 	public Text speedValueText;
 
+	public static Slider myTeamOomphSlider;
+	public static Slider OTeamOomphSlider;
+
+
 	public static Button camLockBtn;
 	public static Button blessingModeBtn;
 	public static Button blessMyGoalBtn;
 	public static Button pusherLinkBtn;
+	public static Text joinLeftText;
 
 	public Image minimapImage;
 	public Button keyGuide;
 	public Image keyGuideImage;
+	public Image btnsHolder;
+
+	public GameObject miniMapGUI;
+
 
 	static NetworkClient myClient;
 	static CScommon.GameSizeMsg gameSizeMsg = new CScommon.GameSizeMsg(); //*** I'm not sure whether I need to initilize that or not
@@ -98,19 +107,26 @@ public class netClientMgr : MonoBehaviour {
 		serverIPInputField.text = serverIPInputField.placeholder.GetComponent<Text>().text;
 		myChatInputField = GameObject.Find("ChatInput").GetComponent<InputField>();
 		speedSlider = GameObject.Find("SpeedSlider").GetComponent<Slider>();
+		myTeamOomphSlider = GameObject.Find("myTeamOomphSlider").GetComponent<Slider>();
+		OTeamOomphSlider = GameObject.Find("OTeamOomphSlider").GetComponent<Slider>();
+
 		camLockBtn = GameObject.Find("camLockBtn").GetComponent<Button>();
-		blessingModeBtn = GameObject.Find("blessingModeBtn").GetComponent<Button>();
+//		blessingModeBtn = GameObject.Find("blessingModeBtn").GetComponent<Button>();
 		blessMyGoalBtn = GameObject.Find("BlessMyTeam").GetComponent<Button>();
 		pusherLinkBtn = GameObject.Find("pusherLinkBtn").GetComponent<Button>();
 		teamScoreDisplay1Transform = GameObject.Find("TeamsScoreDisplay1").transform;
 		teamScoreDisplay2Transform = GameObject.Find("TeamsScoreDisplay2").transform;
 		goalOomphDisplay1Transform = GameObject.Find("GoalOomphDisplay1").transform;
 		goalOomphDisplay2Transform = GameObject.Find("GoalOomphDisplay2").transform;
+		joinLeftText = GameObject.Find("JoinLeftText").GetComponent<Text>();
 
 		myChatInputField.gameObject.SetActive(false);
 		speedSlider.gameObject.SetActive(false);
+		myTeamOomphSlider.gameObject.SetActive(false);
+		OTeamOomphSlider.gameObject.SetActive(false);
+
 		camLockBtn.gameObject.SetActive(false);
-		blessingModeBtn.gameObject.SetActive(false);
+//		blessingModeBtn.gameObject.SetActive(false);
 		blessMyGoalBtn.gameObject.SetActive(false);
 
 		pusherLinkBtn.gameObject.SetActive(false);
@@ -126,6 +142,9 @@ public class netClientMgr : MonoBehaviour {
 		minimapImage.gameObject.SetActive(false);
 		keyGuide.gameObject.SetActive(false);
 		keyGuideImage.gameObject.SetActive(false);
+		btnsHolder.gameObject.SetActive(false);
+		miniMapGUI.SetActive(false);
+
 		keyGuideImageDisplaybool = false;
 
 		//setting up the prefabs
@@ -244,8 +263,11 @@ public class netClientMgr : MonoBehaviour {
 			GOspinner.cleanScene ();
 		GOspinner.settingUpTheScene();
 		speedSlider.gameObject.SetActive(false);
+		myTeamOomphSlider.gameObject.SetActive(false);
+		OTeamOomphSlider.gameObject.SetActive(false);
+
 		camLockBtn.gameObject.SetActive(false);
-		blessingModeBtn.gameObject.SetActive(false);
+//		blessingModeBtn.gameObject.SetActive(false);
 		blessMyGoalBtn.gameObject.SetActive(false);
 
 		pusherLinkBtn.gameObject.SetActive(false);
@@ -253,6 +275,10 @@ public class netClientMgr : MonoBehaviour {
 		minimapImage.gameObject.SetActive(false);
 		keyGuide.gameObject.SetActive(false);
 		keyGuideImage.gameObject.SetActive(false);
+		btnsHolder.gameObject.SetActive(false);
+		miniMapGUI.SetActive(false);
+
+
 	}
 
 	//called by btn in the scene
@@ -430,6 +456,10 @@ public class netClientMgr : MonoBehaviour {
 		keyGuide.gameObject.SetActive(true);
 		keyGuideImage.gameObject.SetActive(false);
 		keyGuideImageDisplaybool = false;
+		btnsHolder.gameObject.SetActive(true);
+		miniMapGUI.SetActive(true);
+
+
 		spectating = true;
 	}
 
@@ -470,8 +500,11 @@ public class netClientMgr : MonoBehaviour {
 		myNodeIndex = nodeIndexMsg.value;
 		myTeamIndex = (int)GOspinner.teamNumCheck(GOspinner.initMsg.nodeData[myNodeIndex].dna);
 		speedSlider.gameObject.SetActive(true);
+		myTeamOomphSlider.gameObject.SetActive(true);
+		OTeamOomphSlider.gameObject.SetActive(true);
+
 		camLockBtn.gameObject.SetActive(true);
-		blessingModeBtn.gameObject.SetActive(true);
+//		blessingModeBtn.gameObject.SetActive(true);
 		blessMyGoalBtn.gameObject.SetActive(true);
 
 		pusherLinkBtn.gameObject.SetActive(true);
@@ -483,7 +516,7 @@ public class netClientMgr : MonoBehaviour {
 		{
 			speedSlider.gameObject.SetActive(false);
 			camLockBtn.gameObject.SetActive(false);
-			blessingModeBtn.gameObject.SetActive(false);
+//			blessingModeBtn.gameObject.SetActive(false);
 			blessMyGoalBtn.gameObject.SetActive(false);
 
 			pusherLinkBtn.gameObject.SetActive(false);
@@ -761,12 +794,15 @@ public class netClientMgr : MonoBehaviour {
 				teamOneScoreForPast = 0;
 				teamTwoScoreForPast = 0;
 			}
+			pushLinkMode = false;
 		}
 		#endregion
 
 		#region prefab manager
 		public static void nodePrefabCheck(int i, bool add)
 		{
+			if (bubbles[i] != null && bubbles[i].gameObject != null) Destroy (bubbles[i].gameObject);
+			
 			CScommon.StaticNodeData nd = initMsg.nodeData[i];
 			string goalTag = "GoalClone";
 			string goalName = "Goal";
@@ -909,8 +945,10 @@ public class netClientMgr : MonoBehaviour {
 				}
 				//updating initmsg with new changes that I get from initrevmessage
 				initMsg.nodeData [j] = initrevmassege.nodeInfo [i].staticNodeData;
-				//destorying gameobjects that are going to be updated
-				Destroy (bubbles[j].gameObject);
+
+//				I don't need to Destorying bubble[j].game object because I do that in nodePrefabCheck()
+//				//destorying gameobjects that are going to be updated
+//				Destroy (bubbles[j].gameObject);
 				//instantiating new gameobjects according to initRivisionMsg
 				nodePrefabCheck(j, false);
 			}
@@ -977,6 +1015,7 @@ public class netClientMgr : MonoBehaviour {
 
 		private static void updateLinksPosRotScale()
 		{
+			try{
 			for (int i = 0; i < linkMsg.links.Length; i++) {
 			CScommon.LinkInfo linkInfo = linkMsg.links [i];
 				links[linkInfo.linkId].transform.position = 
@@ -1003,6 +1042,11 @@ public class netClientMgr : MonoBehaviour {
 
 			links[linkInfo.linkId].transform.LookAt(bubbles[linkInfo.linkData.targetId].transform);
 			links[linkInfo.linkId].transform.Rotate(0.0f,90.0f,90.0f);
+			}
+			}
+			catch(Exception f)
+			{
+				Debug.Log("link missing!");
 			}
 		}
 
@@ -1151,7 +1195,8 @@ public class netClientMgr : MonoBehaviour {
 						float maxOomph = Mathf.Round(CScommon.maxOomph (initMsg.nodeData[gameSizeMsg.teams[i].nodeId].radius,0L));
 						float currentOomph = Mathf.Round(updateMsg.nodeData[gameSizeMsg.teams[i].nodeId].oomph);
 						goalOomphDisplay1Transform.GetComponent<Text>().text = currentOomph + "\n" + maxOomph;
-
+						myTeamOomphSlider.maxValue = maxOomph;
+						myTeamOomphSlider.value = currentOomph;
 //						goalOomphDisplay1Transform.GetComponent<Text>().text = updateMsg.nodeData[gameSizeMsg.teams[i].nodeId].oomph
 //							+ "  " + (CScommon.maxOomph (initMsg.nodeData[gameSizeMsg.teams[i].nodeId].radius,0L));
 //						oomphs[i].localScale =  new Vector3(oomphRadius * 5.0f ,oomphRadius * 5.0f ,0.0f);
@@ -1163,6 +1208,8 @@ public class netClientMgr : MonoBehaviour {
 						float currentOomph = Mathf.Round(updateMsg.nodeData[gameSizeMsg.teams[i].nodeId].oomph);
 
 						goalOomphDisplay2Transform.GetComponent<Text>().text = currentOomph + "\n" + maxOomph;
+						OTeamOomphSlider.maxValue = maxOomph;
+						OTeamOomphSlider.value = currentOomph;
 //							+ "  " + (CScommon.maxOomph (initMsg.nodeData[gameSizeMsg.teams[i].nodeId].radius,0L));
 //						oomphs[i].localScale =  new Vector3(oomphRadius * 5.0f ,oomphRadius * 5.0f ,0.0f);
 
@@ -1176,11 +1223,18 @@ public class netClientMgr : MonoBehaviour {
 
 
 		#region displayNames
+		static string leftMsg;
 		internal static void playerNamesManage (CScommon.NodeNamesMsg partofnames)
 		{
 			for (int i = 0; i < partofnames.arry.Length; i++)
 			{
 				int nodeId = partofnames.arry[i].nodeId;
+
+//				if(partofnames.arry[i].name == string.Empty)
+//				{
+//					leftMsg = GOspinner.dicPlayerNamesIntString[nodeId] + " has left the game!";
+//					new NetworkClient().StartCoroutine(displayJoinLeftText(leftMsg, 2.0f));
+//				}
 
 				if(GOspinner.dicPlayerNamesIntString.ContainsKey(nodeId))
 					GOspinner.dicPlayerNamesIntString.Remove(nodeId);
@@ -1189,7 +1243,10 @@ public class netClientMgr : MonoBehaviour {
 					Destroy(playersNameTransforms[nodeId].gameObject);
 					playersNameTransforms.Remove(nodeId);
 				}
-				if(partofnames.arry[i].name == string.Empty)continue;
+				if(partofnames.arry[i].name == string.Empty)
+				{
+					continue;
+				}
 
 				GOspinner.dicPlayerNamesIntString.Add(nodeId,partofnames.arry[i].name);
 				playersNameTransforms.Add
@@ -1202,6 +1259,13 @@ public class netClientMgr : MonoBehaviour {
 				playersNameTransforms[nodeId].tag = "PlayerName";
 			}
 			changeHowToDisPlayPlayersName();
+		}
+
+		static IEnumerator displayJoinLeftText (string message, float delay) {
+			joinLeftText.text = message;
+			joinLeftText.enabled = true;
+			yield return new WaitForSeconds(delay);
+			joinLeftText.enabled = false;
 		}
 
 
@@ -1271,14 +1335,30 @@ public class netClientMgr : MonoBehaviour {
 		}
 		public static void displayNameChanger(int nodeId)
 		{
+
+//			try{
+//				playersNameTransforms[nodeId].FindChild("playerNameMainCam").GetComponent<TextMesh>().text =
+//					GOspinner.dicPlayerNamesIntString[nodeId] +
+//					"\n P: " + Mathf.Round(scoreMsgGOspinner[nodeId].productivity).ToString()+" L: " + Mathf.Round(scoreMsgGOspinner[nodeId].level).ToString();
+//				//					+ " P" + currentPerformance(nodeId).ToString();
+//				playersNameTransforms[nodeId].FindChild("playerNameMiniMap").GetComponent<TextMesh>().text =
+//					GOspinner.dicPlayerNamesIntString[nodeId]; //+": P: " + scoreMsgGOspinner[nodeId].productivity.ToString()+"L: " + scoreMsgGOspinner[nodeId].level.ToString();
+//				//					+ " P" + currentPerformance(nodeId).ToString();
+//			}
+
 			try{
-			playersNameTransforms[nodeId].FindChild("playerNameMainCam").GetComponent<TextMesh>().text =
+				if(playersNameTransforms.ContainsKey(nodeId))
+					{
+						
+					
+				playersNameTransforms[nodeId].FindChild("playerNameMainCam").GetComponent<TextMesh>().text = 
 				GOspinner.dicPlayerNamesIntString[nodeId] +
 				"\n P: " + Mathf.Round(scoreMsgGOspinner[nodeId].productivity).ToString()+" L: " + Mathf.Round(scoreMsgGOspinner[nodeId].level).ToString();
 			//					+ " P" + currentPerformance(nodeId).ToString();
-			playersNameTransforms[nodeId].FindChild("playerNameMiniMap").GetComponent<TextMesh>().text =
+				playersNameTransforms[nodeId].FindChild("playerNameMiniMap").GetComponent<TextMesh>().text =
 				GOspinner.dicPlayerNamesIntString[nodeId]; //+": P: " + scoreMsgGOspinner[nodeId].productivity.ToString()+"L: " + scoreMsgGOspinner[nodeId].level.ToString();
 			//					+ " P" + currentPerformance(nodeId).ToString();
+					}
 			}
 			catch(Exception e){
 				Debug.Log("ERROR!");
@@ -1659,12 +1739,24 @@ public class netClientMgr : MonoBehaviour {
 				nim.nodeIndex = myNodeIndex;
 				nim.hand = 1;
 				myClient.Send (CScommon.targetNodeType, nim);
+				Debug.Log(EventSystem.current.IsPointerOverGameObject());
+
 				return;
+
 			}
 //#if UNITY_EDITOR || UNITY_STANDALONE || Unity_WEBPLAYER
 			if ((Input.GetMouseButtonUp (0) || Input.GetMouseButtonUp (1)) && Input.touchCount < 2
 			    && !(Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
-				&& (!EventSystem.current.IsPointerOverGameObject() || pushLinkMode))
+			&& (!EventSystem.current.IsPointerOverGameObject()))// || pushLinkMode))
+			{
+				Debug.Log(EventSystem.current.IsPointerOverGameObject());
+//				if(Input.touches.Length > 0 && EventSystem.current.IsPointerOverGameObject(Input.touches[0].fingerId))
+//				{
+//				Debug.Log("event touch: " + EventSystem.current.IsPointerOverGameObject(Input.touches[1].fingerId));
+
+//
+//					return;
+//				}
 
 //			if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved)
 //			{
@@ -1674,7 +1766,7 @@ public class netClientMgr : MonoBehaviour {
 //			    && !myChatInputField.isFocused)
 
 				// && myClient != null && myClient.isConnected && gameIsRunning) 
-			{	//On serverside if I send my own nodeId as the target I'll have no external link
+				//On serverside if I send my own nodeId as the target I'll have no external link
 
 				Debug.Log("inputcount = " + Input.touchCount);
 				nim.nodeIndex = GOspinner.closestBubbleIndexNumber ();
@@ -1703,7 +1795,7 @@ public class netClientMgr : MonoBehaviour {
 
 		public static bool blessingMode = false;
 
-		internal static void requestToBlessThatNode()
+		internal static void requestToBlessThatNode()		
 		{
 			if (Input.GetMouseButtonUp (0) && Input.touchCount < 2
 				&& ((Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
@@ -1726,10 +1818,18 @@ public class netClientMgr : MonoBehaviour {
 
 			CScommon.intMsg nim = new CScommon.intMsg ();
 			//finding the goal of my team
+
+			try
+			{
 			nim.value = gameSizeMsg.teams[teamNumCheck(initMsg.nodeData[myNodeIndex].dna) - 1].nodeId;
 
 			myClient.Send (CScommon.blessMsgType, nim);
 			Debug.Log("bless My Goal#" +nim.value);
+			}
+			catch(Exception e)
+			{
+				Debug.Log("BlessMyGoal Error!");
+			}
 		}
 		#endregion
 

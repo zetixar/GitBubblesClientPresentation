@@ -11,6 +11,7 @@ TagManager:
   - LinkCloneBone
   - PlayerName
   - teamScoreDisplay
+  - minimapImage
   layers:
   - Default
   - TransparentFX
@@ -22,8 +23,8 @@ TagManager:
   - 
   - Minimap
   - Textminimap
-  - 
-  - 
+  - test
+  - quad
   - 
   - 
   - 
